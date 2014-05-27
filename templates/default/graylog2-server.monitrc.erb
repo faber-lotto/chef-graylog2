@@ -1,0 +1,6 @@
+check process graylog2-server
+    with pidfile <%=node.graylog2.server_pid_file%>
+    start program "/sbin/start graylog2-server"
+    stop program "/sbin/stop graylog2-server"
+    depends on mongodb
+    depends on elasticsearch

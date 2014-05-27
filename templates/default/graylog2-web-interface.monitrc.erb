@@ -1,0 +1,4 @@
+check process graylog2-web-interface
+    with pidfile <%=node.graylog2.web_pid_file%>
+    start program "/etc/init.d/graylog2-web-interface start"
+    stop program "/etc/init.d/graylog2-web-interface stop"

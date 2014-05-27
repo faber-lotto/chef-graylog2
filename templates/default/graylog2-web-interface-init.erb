@@ -1,0 +1,71 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          graylog2-web-interface
+# Required-Start:    $graylog2
+# Required-Stop:     $graylog2
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts graylog2-web-interface
+# Description:       Starts graylog2-web-interface using start-stop-daemon
+### END INIT INFO
+
+
+NAME=graylog2-web-interface
+GL_HOME=/usr/local/graylog2_web_interface
+GL_CONF=/usr/local/graylog2_web_interface/conf
+GRAYLOG2_RUN_DIR=<%=node.graylog2.run_dir%>
+GL_PID=<%=node.graylog2.web_pid_file %>
+GL_USER=<%=node.graylog2.user %>
+GL_START_LOG_FILE=/usr/local/graylog2_web_interface/log/graylog2_web_interface_start.log
+CMD=$1
+
+NOHUP=`which nohup`
+
+export GL_CONF
+export GL_PID
+
+# it uses http://www.playframework.com/documentation/2.2.x/ProductionConfiguration
+export JAVA_OPTS="-Dlogger.file=$GL_CONF/graylog2-web-interface-log.xml -Dpidfile.path=$GL_PID"
+
+start() {
+        echo "Starting $NAME ..."
+
+    # Assure that $GRAYLOG2_RUN_DIR exists
+    [ -d $GRAYLOG2_RUN_DIR ] || mkdir -p $GRAYLOG2_RUN_DIR
+
+    if [ "$GL_USER" != "root" ]; then
+      chown "$GL_USER" $GRAYLOG2_RUN_DIR
+    fi
+
+
+       ( cd "$GL_HOME"
+        su $GL_USER -m -c "echo Start $(date)  >>$GL_START_LOG_FILE && $NOHUP $GL_HOME/bin/graylog2-web-interface >>$GL_START_LOG_FILE 2>&1 &"
+        exit $?
+       )1>/dev/null 2>&1
+}
+stop() {
+    PID=`cat $GL_PID`
+    if [ ! -z $PID ]; then
+        echo "Stopping $NAME ($PID) ..."
+        su $GL_USER -m -c "kill $PID"
+    fi
+}
+restart() {
+        echo "Restarting $NAME..."
+        stop
+        start
+}
+case "$CMD" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart)
+                restart
+                ;;
+        *)
+                echo "Usage $0 {start|stop|restart}"
+                RETVAL=1
+esac

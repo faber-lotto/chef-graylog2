@@ -1,0 +1,43 @@
+# Upstart file at /etc/init/graylog2-server.conf
+# Graylog2 Server
+
+### BEGIN INIT INFO
+# Provides: graylog2
+# Required-Start: $all
+# Required-Stop: $all
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Starts GrayLog2
+# Description: Starts GrayLog2 using start-stop-daemon
+### END INIT INFO
+
+env NAME=graylog2
+env GL_HOME=<%=node.graylog2.server_base%>
+env GL_BIN_PATH=$GL_HOME/bin
+
+
+env GRAYLOG2CTL_DIR=$GL_BIN_PATH
+env GRAYLOG2_SERVER_JAR=graylog2-server.jar
+env GRAYLOG2_CONF=/etc/graylog2/graylog2.conf
+env GRAYLOG2_PID=<%=node.graylog2.server_pid_file%>
+env GRAYLOG2_RUN_DIR=<%=node.graylog2.run_dir%>
+env GL_USER=<%=node.graylog2.user %>
+env LOG_FILE=log/graylog2-server.log
+
+
+pre-start script
+  mkdir -p -m0775 $GRAYLOG2_RUN_DIR
+  chown "$GL_USER" $GRAYLOG2_RUN_DIR
+end script
+
+
+start on started mongodb
+stop on [016]
+
+#expect fork
+
+script
+  #exec start-stop-daemon --start --quiet --background --group graylog2 --chdir $GL_HOME --pidfile $GRAYLOG2_PID --exec /usr/bin/java -- -jar ${GRAYLOG2_SERVER_JAR} -f ${GRAYLOG2_CONF} -p ${GRAYLOG2_PID} >> ${GL_HOME}/${LOG_FILE} 2>&1
+  exec sudo --group graylog2 sh -c "cd $GL_HOME && /usr/bin/java -jar ${GRAYLOG2_SERVER_JAR} -f ${GRAYLOG2_CONF} -p ${GRAYLOG2_PID} >> ${GL_HOME}/${LOG_FILE} 2>&1"
+  emit graylog2-server_running
+end script
