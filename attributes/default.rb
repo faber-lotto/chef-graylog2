@@ -13,8 +13,8 @@ default['graylog2']['run_dir']= '/var/run/graylog2'
 default['graylog2']['server_pid_file']= '/var/run/graylog2/graylog2_server.pid'
 
 
-default['graylog2']['web']['version']='0.20.2'
-default['graylog2']['web']['url_patern']='https://github.com/Graylog2/graylog2-web-interface/releases/download/%<version>s/graylog2-web-interface-%<version>s.tgz'
+default['graylog2']['web']['version']='0.92.4'
+default['graylog2']['web']['url_patern']='https://packages.graylog2.org/releases/graylog2-web-interface/graylog2-web-interface-%<version>s.tgz'
 
 default['graylog2']['server']= {
     'config' => {
@@ -57,19 +57,19 @@ default['graylog2']['server']= {
     },
     'additional_config' => {
         "elasticsearch_network_host" => "127.0.0.1",
-        'versionchecks' => 'false',
+        'versionchecks' => 'true',
     } #for unknown settings
 }
 
-default['graylog2']['server']['version']='0.20.2'
-default['graylog2']['server']['url_pattern']='https://github.com/Graylog2/graylog2-server/releases/download/%<version>s/graylog2-server-%<version>s.tgz'
+default['graylog2']['server']['version']='0.92.4'
+default['graylog2']['server']['url_pattern']='https://packages.graylog2.org/releases/graylog2-server/graylog2-server-%<version>s.tgz'
 
 
 
 default['graylog2']['web_pid_file'] = "/var/run/graylog2/graylog2-web-interface.pid"
 
 default["elasticsearch"]["cluster"]["name"] = "graylog2"
-default["elasticsearch"]["version"] = "0.90.10"
+default["elasticsearch"]["version"] = "1.3.2"
 default["elasticsearch"]["network"]["host"] = "127.0.0.1"
 
 default['elasticsearch']['custom_config']['script.disable_dynamic'] = true # http://bouk.co/blog/elasticsearch-rce/
