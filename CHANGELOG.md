@@ -3,6 +3,10 @@ graylog2 CHANGELOG
 
 This file is used to list changes made in each version of the graylog2 cookbook.
 
+0.3.0
+-----
+- [your_name] - update for graylog version 1.0.0
+
 0.2.0
 -----
 - [your_name] - update for graylog2 version 0.92.4

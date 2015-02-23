@@ -16,6 +16,9 @@ GL_CONF=/usr/local/graylog2_web_interface/conf
 GRAYLOG2_RUN_DIR=<%=node.graylog2.run_dir%>
 GL_PID=<%=node.graylog2.web_pid_file %>
 GL_USER=<%=node.graylog2.user %>
+GL_WEB_PORT=<%=node.graylog2.web['port'] || 9000 %>
+GL_WEB_ADDRESS=<%=node.graylog2.web['address'] || '0.0.0.0' %>
+GL_WEB_BIN_NAME=<%=node.graylog2.web['bin'] || 'graylog2-web-interface' %>
 GL_START_LOG_FILE=/usr/local/graylog2_web_interface/log/graylog2_web_interface_start.log
 CMD=$1
 
@@ -25,7 +28,7 @@ export GL_CONF
 export GL_PID
 
 # it uses http://www.playframework.com/documentation/2.2.x/ProductionConfiguration
-export JAVA_OPTS="-Dlogger.file=$GL_CONF/graylog2-web-interface-log.xml -Dpidfile.path=$GL_PID"
+export JAVA_OPTS="-Dlogger.file=$GL_CONF/graylog2-web-interface-log.xml -Dpidfile.path=$GL_PID -Dconfig.file=$GL_CONF/graylog2-web-interface.conf -Dhttp.port=$GL_WEB_PORT -Dhttp.address=$GL_WEB_ADDRESS -Djava.net.preferIPv4Stack=true"
 
 start() {
         echo "Starting $NAME ..."
@@ -39,7 +42,7 @@ start() {
 
 
        ( cd "$GL_HOME"
-        su $GL_USER -m -c "echo Start $(date)  >>$GL_START_LOG_FILE && $NOHUP $GL_HOME/bin/graylog2-web-interface >>$GL_START_LOG_FILE 2>&1 &"
+        su $GL_USER -m -c "echo Start $(date)  >>$GL_START_LOG_FILE && $NOHUP $GL_HOME/bin/$GL_WEB_BIN_NAME >>$GL_START_LOG_FILE 2>&1 &"
         exit $?
        )1>/dev/null 2>&1
 }

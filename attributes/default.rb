@@ -14,7 +14,7 @@ default['graylog2']['server_pid_file']= '/var/run/graylog2/graylog2_server.pid'
 
 
 default['graylog2']['web']['version']='0.92.4'
-default['graylog2']['web']['url_patern']='https://packages.graylog2.org/releases/graylog2-web-interface/graylog2-web-interface-%<version>s.tgz'
+default['graylog2']['web']['url_pattern']='https://packages.graylog2.org/releases/graylog2-web-interface/graylog-web-interface-%<version>s.tgz'
 
 default['graylog2']['server']= {
     'config' => {
@@ -62,7 +62,7 @@ default['graylog2']['server']= {
 }
 
 default['graylog2']['server']['version']='0.92.4'
-default['graylog2']['server']['url_pattern']='https://packages.graylog2.org/releases/graylog2-server/graylog2-server-%<version>s.tgz'
+default['graylog2']['server']['url_pattern']='https://packages.graylog2.org/releases/graylog2-server/graylog-%<version>s.tgz'
 
 
 

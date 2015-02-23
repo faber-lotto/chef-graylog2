@@ -24,7 +24,7 @@ user node.graylog2[:user] do
 end
 
 ark 'graylog2_web_interface' do
-  url format(node.graylog2['web']['url_patern'], version: node.graylog2['web']['version'])
+  url format(node.graylog2['web']['url_pattern'], version: node.graylog2['web']['version'])
   owner node.graylog2[:user]
   group node.graylog2[:group]
   version node.graylog2['web']['version']
